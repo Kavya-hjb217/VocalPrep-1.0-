@@ -13,11 +13,11 @@ function WelcomeContainer() {
   if (!user) return <p>Loading user...</p>; // fallback UI
 
   return (
-    <div className="p-4 text-white">
-      <div className="text-xl font-semibold text-black flex row items-center">
+    <div className="p-4 text-white bg-white rounded-2xl ">
+      <div className="text-xl font-semibold text-black  flex flex-row items-center">
        <h1>Welcome Back,</h1> 
-        <h2 className="text-black ml-1">{user
-.displayName}</h2>
+        <h2 className="text-black ml-1">{user.displayName}</h2>
+        
 
 
 
