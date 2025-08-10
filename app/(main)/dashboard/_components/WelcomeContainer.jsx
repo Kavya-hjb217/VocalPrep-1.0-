@@ -7,9 +7,8 @@ import Image from "next/image";
 function WelcomeContainer() {
   var user= useUser();
   user=user.userData;
-  //  const context = useContext(UserDetailContext);
-  // console.log("user data in webconatainer:",user);
-  console.log("user context in WelcomeContainer:",user);
+
+  // console.log("user context in WelcomeContainer:",user);
   if (!user) return <p>Loading user...</p>; // fallback UI
 
   return (
