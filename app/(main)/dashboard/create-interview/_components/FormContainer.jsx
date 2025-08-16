@@ -13,42 +13,43 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 import { useState } from 'react'
 
-function FormContainer({ onHandleInputChange }) {
+function FormContainer({ onHandleInputChange , GoToNext})  {
    const [interviewType, setInterviewType] = useState([]);
 
-   useEffect(() => {
-    if(interviewType)
-    { onHandleInputChange('interviewType', interviewType);}
-   }, [interviewType]);
+   // useEffect(() => {
+   //  if(interviewType)
+   //  { onHandleInputChange('interviewType', interviewType);}
+   // }, [interviewType]);
 
    // useEffect(() => {
    //  console.log("Updated formData", formData);
    // }, [formData]);
 
 
-   const AddInterviewType=(type)=>{
-     const data=interviewType.includes(type);
+   // const AddInterviewType=(type)=>{
+   //   const data=interviewType.includes(type);
 
-     if(!data)
-     {
-       setInterviewType((prev) => [...prev, type]);
-     }
-     else{
-        const result = interviewType.filter(item => item != type);
-        setInterviewType(result);
-     }
+   //   if(!data)
+   //   {
+   //     setInterviewType((prev) => [...prev, type]);
+   //   }
+   //   else{
+   //      const result = interviewType.filter(item => item != type);
+   //      setInterviewType(result);
+   //   }
 
+   // }
+ const AddInterviewType = (type) => {
+     let updated;
+     if (!interviewType.includes(type)) {
+       updated = [...interviewType, type];
+     } else {
+       updated = interviewType.filter(item => item !== type);
+     }
+     setInterviewType(updated);
+     onHandleInputChange('interviewType', updated); // Pass the new value directly
    }
-// const AddInterviewType = (type) => {
-//   let updated;
-//   if (!interviewType.includes(type)) {
-//     updated = [...interviewType, type];
-//   } else {
-//     updated = interviewType.filter(item => item !== type);
-//   }
-//   setInterviewType(updated);
-//   onHandleInputChange('interviewType', updated); // Pass the new value directly
-// }
+
 
 
 
@@ -66,7 +67,7 @@ function FormContainer({ onHandleInputChange }) {
      </div>
      <div className='mt-5'>
         <h2 className='text-sm font-medium'>Interview Duration</h2>
-        <Select onValueChange={(value) => onHandleInputChange('interviewDuration', value)}>
+        <Select onValueChange={(value) => onHandleInputChange('duration', value)}>
          <SelectTrigger className="w-full mt-2">
             <SelectValue placeholder="Select Duration" />
          </SelectTrigger>
@@ -99,7 +100,7 @@ function FormContainer({ onHandleInputChange }) {
 
        </div>
        </div>
-      <div className='mt-10 flex justify-end'>
+      <div className='mt-10 flex justify-end' onClick={() =>GoToNext()}>
          <Button>Generate Interview <ArrowRight /></Button>
       </div>
      </div>
