@@ -64,9 +64,9 @@ return (
       {questionList?.length > 0 && 
       <div className='p-5 bg-white rounded-xl border border-gray-200'>
        {questionList.map((q, index) => (
-        <div key={index} className='p-4 border-b border-gray-200 rounded-xl'>
-        <h3 className='font-semibold'>{q.question}</h3>
-        <p className='text-sm text-gray-500'>
+        <div key={index} className="p-4 mb-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition duration-300">
+        <h3 className="text-lg font-semibold text-gray-800 mb-2">{q.question}</h3>
+        <p className='text-sm text-blue-500'>
         Type: {q.type} | Difficulty: {q.difficulty}
         </p>
        </div>
