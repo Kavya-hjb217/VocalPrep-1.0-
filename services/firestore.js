@@ -1,10 +1,15 @@
 // lib/firestore.js
-import { collection, getDocs } from "firebase/firestore";
+import { 
+  collection, 
+  getDocs, 
+  getDoc, 
+  addDoc, 
+  doc, 
+  setDoc, 
+  serverTimestamp 
+} from "firebase/firestore";
 import { db } from "./firebase";
-import { getDoc, getFirestore} from "firebase/firestore";
 
-
-import { doc, setDoc} from "firebase/firestore";
 export const getUsers = async () => {
   const usersRef = collection(db, "users");
   const snapshot = await getDocs(usersRef);
@@ -35,4 +40,16 @@ export const addUserToFirestore = async (user) => {
   } catch (error) {
     console.error("❌ Error adding user to Firestore:", error);
   }
+};
+
+export const saveInterviewToFirestore = async (formData, questionList) => {
+  return await addDoc(collection(db, "Created Interviews"), {
+    created_at: serverTimestamp(),
+    duration: formData.duration || "",
+    interview_id: crypto.randomUUID(),
+    jobDescription: formData.jobDescription || "",
+    jobPosition: formData.jobPosition || "",
+    questionlist: questionList, // Array of questions
+    userEmail: formData.userEmail || "",
+  });
 };

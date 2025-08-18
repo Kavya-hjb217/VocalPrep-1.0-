@@ -4,6 +4,18 @@ import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { NextResponse } from 'next/server';
+import { Button } from '@/components/ui/button';
+
+// import { v4 as uuidv4 } from "uuid";
+// import { Firestore } from 'firebase/firestore';
+
+// import QuestionListContainer from './QuestionListContainer';
+import { db } from "@/services/firebase";
+import { saveInterviewToFirestore } from "@/services/firestore";
+
+
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+
 
 function QuestionList({formData}) {
 
@@ -19,6 +31,7 @@ if(formData) {
     GenerateQuestionList();
 }
 }, [formData]);
+
 
 const GenerateQuestionList =async () => {
     setLoading(true);
@@ -47,6 +60,21 @@ const GenerateQuestionList =async () => {
 }
 }
 
+const onFinish = async (formData, questionList) => {
+  if (!formData || questionList.length === 0) {
+    toast.error("No data to save");
+    return;
+  }
+  try {
+    await saveInterviewToFirestore(formData, questionList);
+    toast.success("Interview saved successfully!");
+    console.log("✅ Interview saved to Firestore");
+  } catch (error) {
+    console.error("❌ Error adding document: ", error);
+    toast.error("Failed to save interview.");
+  }
+};
+
 
 return (
     <div>
@@ -62,16 +90,29 @@ return (
       }
 
       {questionList?.length > 0 && 
-      <div className='p-5 bg-white rounded-xl border border-gray-200'>
-       {questionList.map((q, index) => (
+      <div>
+        <h2 className='font-semibold text-lg'>Generated Interview Questions:</h2>
+        <div className='p-5 bg-white rounded-xl border border-gray-200'>
+        {questionList.map((q, index) => (
         <div key={index} className="p-4 mb-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition duration-300">
         <h3 className="text-lg font-semibold text-gray-800 mb-2">{q.question}</h3>
         <p className='text-sm text-blue-500'>
-        Type: {q.type} | Difficulty: {q.difficulty}
-        </p>
-       </div>
+          Type: {q.type} | Difficulty: {q.difficulty}
+         </p> 
+        </div>
             ))}
+        </div>
+        
         </div>}
+
+
+        <div className=' flex justify-end mt-5'>
+         <Button onClick={() => onFinish(formData, questionList)}>Finish</Button>
+
+          {/* add onfinish  */}
+        </div>
+       
+
      </div>
   )
 }
