@@ -12,12 +12,14 @@ import { Button } from '@/components/ui/button';
 // import QuestionListContainer from './QuestionListContainer';
 import { db } from "@/services/firebase";
 import { saveInterviewToFirestore } from "@/services/firestore";
+import { useUser } from '@/app/context/useUser';
 
 
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 
-function QuestionList({formData}) {
+
+function QuestionList({formData, onCreateLink}) {
 
 
 
@@ -25,6 +27,8 @@ function QuestionList({formData}) {
 
 const [loading, setLoading] = useState(false);
 const [questionList, setQuestionList] = useState([]);
+const [saveLoading, setSaveLoading] = useState(false);
+
 
 useEffect(() => {
 if(formData) {
@@ -61,6 +65,7 @@ const GenerateQuestionList =async () => {
 }
 
 const onFinish = async (formData, questionList) => {
+  setSaveLoading(true);
   if (!formData || questionList.length === 0) {
     toast.error("No data to save");
     return;
@@ -73,6 +78,12 @@ const onFinish = async (formData, questionList) => {
     console.error("❌ Error adding document: ", error);
     toast.error("Failed to save interview.");
   }
+  setSaveLoading(false);
+
+  onCreateLink({
+    interview_id: formData.interview_id,
+    userEmail: formData.userEmail
+  })
 };
 
 
@@ -107,9 +118,9 @@ return (
 
 
         <div className=' flex justify-end mt-5'>
-         <Button onClick={() => onFinish(formData, questionList)}>Finish</Button>
+         <Button onClick={() => onFinish(formData, questionList)} disabled={saveLoading}>Generate Interview Link & Finish</Button>
 
-          {/* add onfinish  */}
+         {saveLoading && <Loader2Icon className='animate-spin ml-2' />}         
         </div>
        
 

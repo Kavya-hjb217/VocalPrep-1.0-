@@ -10,8 +10,14 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 
+
+
+  
+
+
+
 export const getUsers = async () => {
-  const usersRef = collection(db, "users");
+  const usersRef = collection(db, "users"); 
   const snapshot = await getDocs(usersRef);
   // console.log("users:",usersRef);
   // console.log("snapshot:",snapshot);
@@ -50,6 +56,6 @@ export const saveInterviewToFirestore = async (formData, questionList) => {
     jobDescription: formData.jobDescription || "",
     jobPosition: formData.jobPosition || "",
     questionlist: questionList, // Array of questions
-    userEmail: formData.userEmail || "",
+   userEmail: formData.userEmail || "",
   });
 };

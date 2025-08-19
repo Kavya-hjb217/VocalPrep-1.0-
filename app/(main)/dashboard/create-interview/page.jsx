@@ -11,10 +11,14 @@ import { useEffect } from 'react'
 import QuestionList from './_components/QuestionList'
 import { Toaster } from '@/components/ui/sonner'
 import { toast } from 'sonner'
+import InterviewLink from './_components/InterviewLink'
+
+
 function CreateInterview({children}) {
     const router = useRouter();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({});
+    const[interviewId,setInterviewId]= useState();
     
     const onHandleInputChange=(field,value)=>{
         setFormData((prev) => ({
@@ -41,6 +45,13 @@ function CreateInterview({children}) {
   }
   setStep(step + 1);
 };
+
+
+const onCreateLink =  (interview_id) => {
+  setInterviewId(interview_id);
+  setStep(step+1);
+}
+
   return (
     <UserDetailProvider>
       <div>
@@ -56,7 +67,10 @@ function CreateInterview({children}) {
              {step===1 ? <FormContainer onHandleInputChange={onHandleInputChange}
              GoToNext={() => onGoToNext()}
              /> 
-             : step===2 ? <QuestionList formData={formData}/> : null}
+             : step===2 ? <QuestionList formData={formData} onCreateLink={(interview_id)=>onCreateLink(interview_id)}/> :
+              step===3 ? <div className='p-5 bg-white rounded-xl border border-gray-200'>
+                <InterviewLink interview_id={interviewId}
+                formData={formData}/></div> : null}
 
 
         </div>
