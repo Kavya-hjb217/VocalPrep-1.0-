@@ -64,6 +64,27 @@ const GenerateQuestionList =async () => {
 }
 }
 
+// const onFinish = async (formData, questionList) => {
+//   setSaveLoading(true);
+//   if (!formData || questionList.length === 0) {
+//     toast.error("No data to save");
+//     return;
+//   }
+//   try {
+//     await saveInterviewToFirestore(formData, questionList);
+//     toast.success("Interview saved successfully!");
+//     console.log("✅ Interview saved to Firestore");
+//   } catch (error) {
+//     console.error("❌ Error adding document: ", error);
+//     toast.error("Failed to save interview.");
+//   }
+//   setSaveLoading(false);
+
+//   onCreateLink({
+//     interview_id: formData.interview_id,
+//     userEmail: formData.userEmail
+//   })
+// };
 const onFinish = async (formData, questionList) => {
   setSaveLoading(true);
   if (!formData || questionList.length === 0) {
@@ -71,20 +92,22 @@ const onFinish = async (formData, questionList) => {
     return;
   }
   try {
-    await saveInterviewToFirestore(formData, questionList);
+    // ⬅️ This returns the Firestore doc ID
+    const interviewId = await saveInterviewToFirestore(formData, questionList);
+
     toast.success("Interview saved successfully!");
-    console.log("✅ Interview saved to Firestore");
+    console.log("✅ Interview saved to Firestore with ID:", interviewId);
+
+    // Use the ID from Firestore, not formData
+    onCreateLink(interviewId, formData); 
+
   } catch (error) {
     console.error("❌ Error adding document: ", error);
     toast.error("Failed to save interview.");
   }
   setSaveLoading(false);
-
-  onCreateLink({
-    interview_id: formData.interview_id,
-    userEmail: formData.userEmail
-  })
 };
+
 
 
 return (

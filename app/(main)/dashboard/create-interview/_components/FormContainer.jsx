@@ -100,8 +100,8 @@ function FormContainer({ onHandleInputChange , GoToNext})  {
 
        </div>
        </div>
-      <div className='mt-10 flex justify-end' onClick={() =>GoToNext()}>
-         <Button>Generate Interview <ArrowRight /></Button>
+      <div className='mt-10 flex justify-end' >
+         <Button onClick={() =>GoToNext()}>Generate Interview <ArrowRight /></Button>
       </div>
      </div>
     )
